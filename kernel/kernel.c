@@ -4,11 +4,12 @@
 void main() {
   clear_screen();
   set_cursor(0,0);
-  print_string("hello world!", -1, -1);
-  char key;
+  print_string("C:\\", -1, -1);
   while (1) {
-    key = read_keyboard();
-    print_char(key, 0, 2);
+    char key = read_keyboard();
+    if (key != '\0') {
+      print_char(key, -1, -1);
+    }
   }
   return;
 }

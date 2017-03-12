@@ -103,5 +103,5 @@
 #define KEY_F12 0x58
 
 
-
+static char previous_key = '\0';
 char read_keyboard();

@@ -7,8 +7,8 @@
 #define REG_SCREEN_CTRL 0x3d4
 #define REG_SCREEN_DATA 0x3d5
 
-void print_char(char,unsigned int, unsigned int);
-void print_string(char*, unsigned int, unsigned int);
+void print_char(char, int, int);
+void print_string(char*, int, int);
 void clear_screen();
 void set_cursor(unsigned int, unsigned int);
 int get_cursor();

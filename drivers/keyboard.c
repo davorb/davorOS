@@ -3,6 +3,12 @@
 
 char read_keyboard() {
   int data = port_byte_in(KEYBOARD_DATA_PORT);
+
+  if (data == previous_key) {
+    return '\0';
+  }
+  previous_key = data;
+
   switch (data) {
   case KEY_1 :
     return '1';
@@ -99,6 +105,6 @@ char read_keyboard() {
   case KEY_SPACE :
     return ' '; // This one might need changing
   default :
-    return ' ';
+    return '\0';
   }
 }

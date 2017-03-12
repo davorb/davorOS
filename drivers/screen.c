@@ -1,22 +1,27 @@
 #include "screen.h"
 #include "../kernel/low_level.h"
 
-void print_char(char c, unsigned int col, unsigned int row) {
-  if (col >= MAX_COLUMNS || row >= MAX_ROWS) {
-    return;
+void print_char(char c, int col, int row) {
+  if (col == -1 && row == -1) {
+    int offset = get_cursor() / 2;
+    col = offset % MAX_COLUMNS;
+    row = (offset-col) / MAX_COLUMNS;
   }
 
   unsigned char* video_address = (unsigned char*) VIDEO_ADDRESS;
   int pos = col*2 + row*MAX_COLUMNS*2;
+  /* video_address[0] = to_c(col); */
+  /* video_address[2] = to_c(row); */
   video_address[pos] = c;
   video_address[pos+1] = WHITE_ON_BLACK;
+  set_cursor(col+1, row);
 }
 
 static char to_c(int i) {
   return i+48;
 }
 
-void print_string(char* string, unsigned int col, unsigned int row) {
+void print_string(char* string, int col, int row) {
   if (col == -1 && row == -1) {
     int offset = get_cursor() / 2;
     col = offset % MAX_COLUMNS;
