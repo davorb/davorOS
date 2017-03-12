@@ -1,3 +1,4 @@
 kernel.bin
 os-image
 kernel/*.o
+drivers/*.o
