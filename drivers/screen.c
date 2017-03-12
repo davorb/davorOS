@@ -12,7 +12,17 @@ void print_char(char c, unsigned int col, unsigned int row) {
   video_address[pos+1] = WHITE_ON_BLACK;
 }
 
+static char to_c(int i) {
+  return i+48;
+}
+
 void print_string(char* string, unsigned int col, unsigned int row) {
+  if (col == -1 && row == -1) {
+    int offset = get_cursor() / 2;
+    col = offset % MAX_COLUMNS;
+    row = (offset-col) / MAX_COLUMNS;
+  }
+
   int i = col;
   while (*string != '\0') {
     if (i > MAX_COLUMNS) {
@@ -23,6 +33,7 @@ void print_string(char* string, unsigned int col, unsigned int row) {
     print_char(*string, i, row);
     string++;
     i++;
+    set_cursor(i, row);
   }
 }
 
@@ -50,4 +61,17 @@ void set_cursor(unsigned int col, unsigned int row) {
   /* register DL sets the row */
   port_byte_out(REG_SCREEN_CTRL, 0x0e);
   port_byte_out(REG_SCREEN_DATA, (unsigned char) (pos>>8) & 0xff);
+}
+
+int get_cursor() {
+  /* register DL */
+  port_byte_out(REG_SCREEN_CTRL, 0x0e);
+  int offset = port_byte_in(REG_SCREEN_DATA) << 8;
+
+  /* register DH */
+  port_byte_out(REG_SCREEN_CTRL, 0x0f);
+  offset += port_byte_in(REG_SCREEN_DATA);
+
+  /* each VGA character cell occupies two bytes */
+  return offset*2;
 }

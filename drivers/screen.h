@@ -11,3 +11,6 @@ void print_char(char,unsigned int, unsigned int);
 void print_string(char*, unsigned int, unsigned int);
 void clear_screen();
 void set_cursor(unsigned int, unsigned int);
+int get_cursor();
+
+static char to_c(int);
